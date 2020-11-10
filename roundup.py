@@ -3,6 +3,16 @@ import csv
 import math
 import os.path
 
+DEBIT_TRANSACTION_NAMES = ["amount", "debit"]
+
+
+def string_to_money_int(number):
+    if number.find(".") != -1:
+        decimals = len(number)-1-number.find(".")
+        if decimals >= 3:
+            number = number[:-decimals+2]
+        return int(number.replace(".", ""))
+
 
 def get_roundups_in_csv(csv_file_name):
     with open(str(csv_file_name), "r") as file:
@@ -10,14 +20,26 @@ def get_roundups_in_csv(csv_file_name):
         csv_list = list(csv_reader)
         head = csv_list[0]
         head = [item.lower() for item in head]
-        amount_column = head.index("amount")
+        possible_amount_column = None
+        for possibility in DEBIT_TRANSACTION_NAMES:
+            if possibility in " ".join(head):
+                possible_amount_column = possibility
+                exit
+
+        if possible_amount_column == None:
+            print("No column for transactions found.")
+            exit()
+
+        amount_column = head.index(possible_amount_column)
 
         del csv_list[0]
 
         total = 0
 
         for transaction in csv_list:
-            transaction = int(transaction[amount_column].replace(".", ""))
+            if transaction[amount_column] == "":
+                continue
+            transaction = string_to_money_int(transaction[amount_column])
             if transaction < 0:
                 continue
             rounded_num = math.ceil(transaction / 100.0)*100
@@ -52,6 +74,7 @@ Examples:
     Round up chase.csv               :  python roundup.py chase.csv
     Round up transactions directory  :  python roundup.py transactions
           """)
+
 
 if(os.path.isfile(directory_or_file)):
     rounded = get_roundups_in_csv(directory_or_file)
