@@ -1,9 +1,15 @@
+#!/usr/bin/env python3
+
 import sys
 import csv
 import math
 import os.path
 
 DEBIT_TRANSACTION_NAMES = ["amount", "debit"]
+
+
+def roundup():
+    pass
 
 
 def string_to_money_int(number):
@@ -66,13 +72,13 @@ This is meant to be used with your bank/credit card statements in a CSV format.
 It will calculate all of the purchases, round them to the nearest dollar
 and give you that total. You can use that total to invest, or save.
 ---
-Usage: python roundup.py <directory or file.csv>
+Usage: roundup <directory or file.csv>
 
 Not providing a path means the program will loop through the current directory.
 
 Examples:
-    Round up chase.csv               :  python roundup.py chase.csv
-    Round up transactions directory  :  python roundup.py transactions
+    Round up chase.csv               :  roundup chase.csv
+    Round up transactions directory  :  roundup transactions
           """)
 
 
@@ -93,3 +99,6 @@ elif(os.path.isdir(directory_or_file)):
         print(
             f'{item} transactions round to ${money_int_to_decimal_string(roundups[item])}')
     print(f'Total is ${money_int_to_decimal_string(sum(roundups.values()))}')
+
+if __name__ == "__main__":
+    roundup()
