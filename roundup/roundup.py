@@ -46,6 +46,7 @@ def get_roundups_in_csv(csv_file_name):
             if transaction[amount_column] == "":
                 continue
             transaction = string_to_money_int(transaction[amount_column])
+            # print(transaction)
             if transaction < 0:
                 continue
             rounded_num = math.ceil(transaction / 100.0)*100
