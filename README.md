@@ -4,6 +4,7 @@ I tried Acorns and Stash and didn't want to pay monthly, so I made this python s
 ```
 CSV-RoundUps
 ---
+
 This is meant to be used with your bank/credit card statements in a CSV format.
 
 It will calculate all of the purchases, round them to the nearest dollar
